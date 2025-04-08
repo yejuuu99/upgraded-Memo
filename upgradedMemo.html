@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>upgraded memo</title>
+    <link rel="stylesheet" href="upgradedMemo.Style.css">
+</head>
+<body>
+
+    <h1>간단한 메모장</h1>
+    <textarea id="memo" placeholder="여기에 메모를 작성하세요..."></textarea> </p>
+    <button id="clearBtn">초기화</button>
+    <button id="toggleThemeBtn">🌙 다크모드</button>
+
+    <script>
+        const memoTextarea = document.getElementById("memo");
+        const clear = document.getElementById("clearBtn");
+        const toggleTheme = document.getElementById("toggleThemeBtn");
+
+        memoTextarea.addEventListener("input", () => {
+            localStorage.setItem("typedMemo", memoTextarea.value);
+        });
+
+        window.addEventListener("DOMContentLoaded", () => {
+            const savedMemo = localStorage.getItem("typedMemo");
+            const savedTheme = localStorage.getItem("theme");
+
+            if(savedMemo){
+                memoTextarea.value = savedMemo;
+            };
+            if(savedTheme === "dark"){
+                document.body.classList.add("dark-mode");
+                toggleTheme.textContent = "☀️ 라이트모드";
+            }
+            memoTextarea.focus();
+        });
+
+        clear.addEventListener("click", () => {
+            localStorage.removeItem("typedMemo");
+            memoTextarea.value = "";
+            memoTextarea.focus();
+        });
+
+        toggleTheme.addEventListener("click", () => {
+            document.body.classList.toggle("dark-mode");
+            const isDark = document.body.classList.contains("dark-mode");
+            localStorage.setItem("theme", isDark ? "dark" : "light");
+            toggleTheme.textContent = isDark ? "☀️ 라이트모드" : "🌙 다크모드";
+        });
+
+    </script>
+</body>
+</html>
